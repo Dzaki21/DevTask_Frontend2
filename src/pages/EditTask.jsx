@@ -1,6 +1,6 @@
 import Sidebar from "../components/Sidebar"
 
-export default function NewTask() {
+export default function EditTask() {
     return (
         <div className="flex min-h-screen bg-gray-100">
             <Sidebar />
@@ -11,7 +11,7 @@ export default function NewTask() {
                         Dashboard
                     </p>
                     <h1 className="text-3xl font-bold">
-                        Create New Task
+                        Edit Task
                     </h1>
                 </div>
 
