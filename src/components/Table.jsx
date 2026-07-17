@@ -1,128 +1,125 @@
 import { Link } from "react-router-dom";
-import { Plus, Pencil, Trash2 } from "lucide-react"
+import { Plus, Pencil, Trash2 } from "lucide-react";
+import { useState, useEffect } from "react";
+import DeleteModal from "./DeleteModal";
+import { getTasks, deleteTask } from "../services/taskServices";
 
 export default function Table() {
-    return(
-        <div className="bg-white rounded-3xl mt-4 p-4 shadow-sm">
+  const [tasks, setTasks] = useState([]);
 
-            <div className=" flex justify-end mb-2">
-                <Link
-                to="/new-task"
-                 className="bg-gray-100 flex px-3 py-3 rounded-2xl font-medium hover:bg-gray-200">
-                    <Plus size={20}/>
-                    New Task
-                </Link>
-            </div>
+  const [showDelete, setShowDelete] = useState(false);
+  const [selectedTask, setSelectedTask] = useState(null);
 
-            <div className="grid grid-cols-5 text-gray-500 text-sm font-semibold border-b pb-2">
-                <p>TASK</p>
-                <p>CATEGORY</p>
-                <p>STATUS</p>
-                <p>CREATED</p>
-                <p className="text-right">ACTIONS</p>
-            </div>
 
-            <div className="grid grid-cols-5 items-center py-2 border-b border-gray-500">
-                <div>
-                    <h3 className="font-semibold text-gray-900">
-                        Fix bug on login page
-                    </h3>
+  async function fetchTasks() {
+    try {
+      const data = await getTasks();
+      console.log(data);
+      setTasks(data);
+    } catch (error) {
+      console.error(error)
+    }
+  };
+  useEffect(() => {
 
-                    <p className="text-sm text-gray-500">
-                        Session token drops on refresh; users bounced to /login
-                    </p>
-                </div>
+    fetchTasks();
+  }, [])
 
-                <div>
-                    <span className="bg-gray-200 px-3 py-1 rounded-l text-sm font-medium">
-                        Frontend
-                    </span>
-                </div>
 
-                <div>
-                    <span className="bg-sky-200 text-sky-700 px-3 py-1 rounded-lg text-sm font-medium">
-                        In Progress
-                    </span>
-                </div>
+  return (
+    <div className="bg-white rounded-3xl mt-4 p-6 shadow-sm">
+      {/* Button */}
+      <div className="flex justify-end mb-4">
+        <Link
+          to="/new-task"
+          className="flex items-center gap-2 bg-gray-100 px-4 py-3 rounded-xl hover:bg-gray-200"
+        >
+          <Plus size={20} />
+          New Task
+        </Link>
+      </div>
 
-                <div>
-                    <p className="font-medium">Jul 12</p>
-                </div>
+      <table className="w-full table-fixed">
+        <thead>
+          <tr className="border-b text-left text-gray-500 text-sm">
+            <th className="pb-3 w-[40%]">TASK</th>
+            <th className="pb-3 w-[15%]">CATEGORY</th>
+            <th className="pb-3 w-[15%]">STATUS</th>
+            <th className="pb-3 w-[15%]">CREATED</th>
+            <th className="pb-3 w-[15%] text-right">ACTIONS</th>
+          </tr>
+        </thead>
+      </table>
 
-                <div className="flex justify-end gap-4">
-                    <Pencil size={18} className="cursor-pointer"/>
-                    <Trash2 size={18} className="cursor-pointer"/>
-                </div>
-            </div>
+      <div className="max-h-[250px] overflow-y-auto">
+        <table className="w-full table-fixed">
+          <tbody>
+            {tasks.map((task) => (
+              <tr key={task._id} className="border-b align-middle">
+                <td className="py-4 w-[40%]">
+                  <h3 className="font-semibold">{task.title}</h3>
+                  <p className="text-sm text-gray-500">
+                    {task.description}
+                  </p>
+                </td>
 
-             <div className="grid grid-cols-5 items-center py-2 border-b border-gray-500">
-                <div>
-                    <h3 className="font-semibold text-gray-900">
-                        Fix bug on login page
-                    </h3>
+                <td className="w-[15%]">
+                  <span className="bg-gray-200 px-3 py-1 rounded-lg text-sm">
+                    {task.category}
+                  </span>
+                </td>
 
-                    <p className="text-sm text-gray-500">
-                        Session token drops on refresh; users bounced to /login
-                    </p>
-                </div>
+                <td className="w-[15%]">
+                  <span className="bg-sky-200 text-sky-700 px-3 py-1 rounded-lg text-sm">
+                    {task.status}
+                  </span>
+                </td>
 
-                <div>
-                    <span className="bg-gray-200 px-3 py-1 rounded-l text-sm font-medium">
-                        Frontend
-                    </span>
-                </div>
+                <td className="w-[15%] font-medium">
+                  {task.created}
+                </td>
 
-                <div>
-                    <span className="bg-sky-200 text-sky-700 px-3 py-1 rounded-lg text-sm font-medium">
-                        In Progress
-                    </span>
-                </div>
-
-                <div>
-                    <p className="font-medium">Jul 12</p>
-                </div>
-
-                <div className="flex justify-end gap-4">
+                <td className="w-[15%]">
+                  <div className="flex justify-end gap-4">
                     <Link to="/edit-task">
-                     <Pencil size={18} className="cursor-pointer"/>
+                      <Pencil size={18} className="cursor-pointer" />
                     </Link>
-                    <Trash2 size={18} className="cursor-pointer"/>
-                </div>
-            </div>
 
-            <div className="grid grid-cols-5 items-center py-2 border-b border-gray-500">
-                <div>
-                    <h3 className="font-semibold text-gray-900">
-                        Fix bug on login page
-                    </h3>
+                    <Trash2
+                      size={18}
+                      className="cursor-pointer"
+                      onClick={() => {
+                        setSelectedTask(task);
+                        setShowDelete(true);
+                      }}
+                    />
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
-                    <p className="text-sm text-gray-500">
-                        Session token drops on refresh; users bounced to /login
-                    </p>
-                </div>
+      <DeleteModal
+        isOpen={showDelete}
+        taskTitle={selectedTask?.title}
+        onClose={() => setShowDelete(false)}
+        onDelete={async () =>{
+            try {
+              await deleteTask(selectedTask._id);
 
-                <div>
-                    <span className="bg-gray-200 px-3 py-1 rounded-l text-sm font-medium">
-                        Frontend
-                    </span>
-                </div>
+              setTasks((prev) =>
+                prev.filter((task) => task._id !== selectedTask._id)
+              );
+              setShowDelete(false);
+              setSelectedTask(null);
 
-                <div>
-                    <span className="bg-sky-200 text-sky-700 px-3 py-1 rounded-lg text-sm font-medium">
-                        In Progress
-                    </span>
-                </div>
-
-                <div>
-                    <p className="font-medium">Jul 12</p>
-                </div>
-
-                <div className="flex justify-end gap-4">
-                    <Pencil size={18} className="cursor-pointer"/>
-                    <Trash2 size={18} className="cursor-pointer"/>
-                </div>
-            </div>
-            
-        </div>
-    );
+            } catch (error) {
+              console.error(error);
+            }
+        }}
+      />
+    </div>
+  );
 }
