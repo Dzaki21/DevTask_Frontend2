@@ -5,7 +5,7 @@ export default function EditTask() {
         <div className="flex min-h-screen bg-gray-100">
             <Sidebar />
 
-            <main className="flex-1 p-8">
+            <main className="flex-1 p-4">
                 <div className="bg-white rounded-3xl p-6 shadow-sm">
                     <p className="text-gray-400 text-sm">
                         Dashboard

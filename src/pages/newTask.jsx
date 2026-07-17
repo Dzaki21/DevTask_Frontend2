@@ -1,11 +1,25 @@
-import Sidebar from "../components/Sidebar"
+import { useState } from "react";
+import Sidebar from "../components/Sidebar";
+import Category from "../components/NewCategory";
+import Status from "../components/NewStatus";
+
 
 export default function NewTask() {
+    // Categori
+    const [active, setActive] = useState("");
+    const categories = ["Frontend", "Beckend", "QA", "DevOps"]
+    // Status
+    const [activee, setActivee] = useState("")
+    const statuses = ["Pending", "In Progress", "Completed"]
+
+
+
+
     return (
         <div className="flex min-h-screen bg-gray-100">
             <Sidebar />
 
-            <main className="flex-1 p-8">
+            <main className="flex-1 p-4">
                 <div className="bg-white rounded-3xl p-6 shadow-sm">
                     <p className="text-gray-400 text-sm">
                         Dashboard
@@ -16,8 +30,8 @@ export default function NewTask() {
                 </div>
 
                 <div>
-                    <div className="bg-white rounded-3xl shadow-sm p-8 mt-6">
-                        <div className="mb-6">
+                    <div className="bg-white rounded-3xl shadow-sm p-4 mt-4">
+                        <div className="mb-2">
                             <label className="block text-sm font-semibold mb-2">
                                 Task Title
                             </label>
@@ -27,7 +41,7 @@ export default function NewTask() {
                                 placeholder="Enter task title..."
                                 className="w-full border border-gray-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-black" />
                         </div>
-                        <div className="mb-6">
+                        <div className="mb-2">
                             <label className="block text-sm font-semibold mb-2">
                                 Description
                             </label>
@@ -43,22 +57,17 @@ export default function NewTask() {
                                 Category
                             </label>
 
-                            <div className="flex gap-3 flex=wrap">
-                                <button className="px-4 py-2 rounded-xl bg-black text-white">
-                                    Frontend
-                                </button>
+                            <div className="flex gap-3 flex-wrap">
+                               {categories.map((category) => (
+                                <Category
+                                    key={category}
+                                    active={active === category}
+                                    onClick={() => setActive(category)}
 
-                                <button className="px-4 py-2 rounded-xl bg-gray-100 hover:bg-gray-200">
-                                    Backend
-                                </button>
-
-                                <button className="px-4 py-2 rounded-xl bg-gray-100 hover:bg-gray-200">
-                                    QA
-                                </button>
-
-                                <button className="px-4 py-2 rounded-xl bg-gray-100 hover:bg-gray-200">
-                                    DevOps
-                                </button>
+                                    >
+                                        {category}
+                                </Category>
+                               ))}
                             </div>
                         </div>
                         <div className="mb-8">
@@ -67,17 +76,15 @@ export default function NewTask() {
                             </label>
 
                             <div className="flex gap-3 flex-wrap">
-                                <button className="px-4 py-2 rounded-xl bg-yellow-100 text-yellow-700 font-medium">
-                                    Pending
-                                </button>
-
-                                <button className="px-4 py-2 rounded-xl bg-blue-100 text-blue-700 font-medium">
-                                    In Progress
-                                </button>
-
-                                <button className="px-4 py-2 rounded-xl bg-green-100 text-green-700 font-medium">
-                                    Completed
-                                </button>
+                               {statuses.map(( status ) =>
+                                  <Status
+                                    key={status}
+                                    active={activee === status}
+                                    onClick={() => setActivee(status)}
+                                  >
+                                        {status}
+                                  </Status>
+                            )}
                             </div>
                         </div>
 

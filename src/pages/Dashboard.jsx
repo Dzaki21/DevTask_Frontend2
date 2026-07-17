@@ -9,7 +9,7 @@ export default function Dashboard() {
         <div className="flex min-h-screen">
             <Sidebar />
 
-            <main className="flex-1 p-8 bg-gray-100">   
+            <main className="flex-1 p-4 bg-gray-100">   
             <Header />
 
              <div>

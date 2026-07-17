@@ -2,7 +2,7 @@ import { Search as SearchIcon} from "lucide-react"
 
 export default function Search() {
     return(
-    <div className="bg-white rounded 2xl mt-6 p-6 shadow-sm min-h-[140px]">
+    <div className="bg-white rounded-2xl mt-6 p-4 shadow-sm">
 
         <div className="flex justify-between items-start">
 
@@ -17,7 +17,7 @@ export default function Search() {
 
                 <input type="text"
                     placeholder="Search Task" 
-                    className="w-full rounded-2xl bg-gray-100 py-4 pl-14 pr-4 outline-none"
+                    className="w-full rounded-2xl bg-gray-100 py-3 pl-14 pr-4 outline-none"
                 />
             </div>
 
