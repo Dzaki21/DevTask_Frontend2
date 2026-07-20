@@ -1,29 +1,18 @@
 import { Link } from "react-router-dom";
 import { Plus, Pencil, Trash2 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import DeleteModal from "./DeleteModal";
-import { getTasks, deleteTask } from "../services/taskServices";
+import { deleteTask } from "../services/taskServices";
 
-export default function Table() {
-  const [tasks, setTasks] = useState([]);
-
+export default function Table({
+  tasks,
+  setTasks,
+  page,
+  setPage,
+  totalPages,
+}) {
   const [showDelete, setShowDelete] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
-
-
-  async function fetchTasks() {
-    try {
-      const data = await getTasks();
-      console.log(data);
-      setTasks(data);
-    } catch (error) {
-      console.error(error)
-    }
-  };
-  useEffect(() => {
-
-    fetchTasks();
-  }, [])
 
 
   return (
@@ -81,8 +70,9 @@ export default function Table() {
 
                 <td className="w-[15%]">
                   <div className="flex justify-end gap-4">
-                    <Link to="/edit-task">
-                      <Pencil size={18} className="cursor-pointer" />
+                    <Link to={`/edit-task/${task._id}`}>
+                      <Pencil size={18}
+                        className="cursor-pointer" />
                     </Link>
 
                     <Trash2
@@ -105,21 +95,44 @@ export default function Table() {
         isOpen={showDelete}
         taskTitle={selectedTask?.title}
         onClose={() => setShowDelete(false)}
-        onDelete={async () =>{
-            try {
-              await deleteTask(selectedTask._id);
+        onDelete={async () => {
+          try {
+            await deleteTask(selectedTask._id);
 
-              setTasks((prev) =>
-                prev.filter((task) => task._id !== selectedTask._id)
-              );
-              setShowDelete(false);
-              setSelectedTask(null);
+            setTasks((prev) =>
+              prev.filter((task) => task._id !== selectedTask._id)
+            );
+            setShowDelete(false);
+            setSelectedTask(null);
 
-            } catch (error) {
-              console.error(error);
-            }
+          } catch (error) {
+            console.error(error);
+          }
         }}
       />
+      <div className="flex justify-center items-center gap-3 mt-6">
+
+        <button
+          onClick={() => setPage(page - 1)}
+          disabled={page === 1}
+          className="px-4 py-2 rounded-lg bg-gray-200 disabled:opacity-50"
+        >
+          Previous
+        </button>
+
+        <span className="font-semibold">
+          {page} / {totalPages}
+        </span>
+
+        <button
+          onClick={() => setPage(page + 1)}
+          disabled={page === totalPages}
+          className="px-4 py-2 rounded-lg bg-gray-200 disabled:opacity-50"
+        >
+          Next
+        </button>
+
+      </div>
     </div>
   );
 }

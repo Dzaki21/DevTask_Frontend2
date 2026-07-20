@@ -9,7 +9,7 @@ function App() {
     <Routes>
       <Route path="/" element={<DashboardPages />}/>
       <Route path="/new-task" element={<NewTask/>}/>
-       <Route path="/edit-task" element={<EditTask />} />
+       <Route path="/edit-task/:id" element={<EditTask />} />
     </Routes>
     </BrowserRouter>
   )

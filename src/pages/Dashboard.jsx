@@ -7,19 +7,29 @@ import { getTasks } from "../services/taskServices";
 
 
 export default function Dashboard() {
+    const [tasks, setTasks] = useState([]);
+    const [search, setSearch] = useState("");
+    const [status, setStatus] = useState("All");
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
 
     useEffect(() => {
         async function fetchTasks() {
             try {
-                const data = await getTasks();
-                setTasks(data);
+                const data = await getTasks(search, status, page);
+                setTasks(data.tasks);
+                setTotalPages(data.totalPages)
             } catch (error) {
                 console.error(error)
             }
         }
         fetchTasks();
-    }, [])
-    const [tasks, setTasks] = useState([]);
+    }, [search, status, page])
+
+    useEffect(() => {
+        setPage(1);
+    }, [search, status]);
+
     const totalTask = tasks.length;
 
     const pendingTask = tasks.filter(
@@ -34,6 +44,8 @@ export default function Dashboard() {
         (task) => task.status === "Completed"
     ).length;
 
+
+
     return (
         <div className="flex min-h-screen">
             <Sidebar />
@@ -47,10 +59,22 @@ export default function Dashboard() {
 
                 />
                 <div>
-                    <Search />
+                    <Search
+                        value={search}
+                        onChange={setSearch}
+                        status={status}
+                        setStatus={setStatus}
+
+                    />
                 </div>
 
-                <Table tasks={tasks} />
+                <Table
+                    tasks={tasks}
+                    setTasks={setTasks}
+                    page={page}
+                    setPage={setPage}
+                    totalPages={totalPages}
+                />
 
             </main>
         </div>
