@@ -16,7 +16,7 @@ export default function Table({
 
 
   return (
-    <div className="bg-white rounded-3xl mt-4 p-6 shadow-sm">
+    <div className="bg-white rounded-3xl mt-4 p-3 shadow-sm">
       {/* Button */}
       <div className="flex justify-end mb-4">
         <Link

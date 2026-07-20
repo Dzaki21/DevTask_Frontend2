@@ -15,7 +15,7 @@ export default function SideBar() {
                 <NavLink
                     to="/"
                     className={({ isActive }) =>
-                        `flex gap-3 item-center w-full text-left rounded-lg px-4 py-2 ${isActive
+                        `flex gap-3 item-center w-full text-left rounded-xl px-4 py-2 ${isActive
                             ? "bg-black text-white"
                             : "text-white hover:bg-black/30"
                         }`
@@ -27,7 +27,7 @@ export default function SideBar() {
                 <NavLink
                     to="/new-task"
                     className={({ isActive }) =>
-                        `flex items-center gap-3 w-full px-4 py-3 rounded-xl ${isActive
+                        `flex items-center gap-3 w-full px-4 py-2 rounded-xl ${isActive
                             ? "bg-black text-white"
                             : "text-white hover:bg-black/30"
                         }`

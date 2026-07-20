@@ -2,7 +2,7 @@ import { Search as SearchIcon} from "lucide-react"
 
 export default function Search({ value, onChange, status, setStatus}) {
     return(
-    <div className="bg-white rounded-2xl mt-6 p-4 shadow-sm">
+    <div className="bg-white rounded-2xl mt-5 p-3 shadow-sm">
 
         <div className="flex justify-between items-start">
 
