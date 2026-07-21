@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getTasks, updateTask } from "../services/taskServices";
 import Status from "../components/EditStatus";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function EditTask() {
     const [title, setTitle] = useState("");
@@ -21,11 +23,23 @@ export default function EditTask() {
     const navigate = useNavigate();
 
     useEffect(() => {
+        const token = localStorage.getItem("token");
+
+        if(!token){
+            toast.warning("Silahkan login terlebih dahulu!");
+            
+            setTimeout(() => {
+                navigate("/login    ")
+            }
+            
+            ), 1000
+        }
+
         const fetchTask = async () => {
             try {
                 const data = await getTasks();
 
-                const task = data.find((item) => item._id === id);
+                const task = data.tasks.find((item) => item._id === id);
 
                 if (task) {
                     setTitle(task.title);
@@ -140,11 +154,12 @@ export default function EditTask() {
                         </div>
 
                         <div className="flex justify-end gap-4 mt-10">
-                            <button
+                            <Link
+                            to="/"
                                 className="px-6 py-3 rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-100 transition"
                             >
                                 Cancel
-                            </button>
+                            </Link>
 
                             <button
                                 onClick={handleUpdate}

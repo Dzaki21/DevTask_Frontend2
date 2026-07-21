@@ -18,9 +18,11 @@ export async function getTasks(
 }
 
 export async function createTask(task) {
+    const  token = localStorage.getItem("token")
     const response = await fetch(API_URL, {
         method: "POST",
         headers: {
+            Authorization: `Bearer ${token}`,
             "Content-type" : "application/json"
         },
         body: JSON.stringify(task)
@@ -33,9 +35,12 @@ export async function createTask(task) {
 }
 
 export async function updateTask(id, taskData) {
+    const token = localStorage.getItem("token")
+
     const response = await fetch(`${API_URL}/${id}`, {
         method:"PUT",
         headers: {
+            Authorization: `Bearer ${token}`,
             "Content-Type" : "application/json"
         },
         body : JSON.stringify(taskData)
@@ -49,8 +54,12 @@ export async function updateTask(id, taskData) {
 }
 
 export async function deleteTask(id) {
+    const token = localStorage.getItem("token")
     const response = await fetch(`${API_URL}/${id}`, {
         method:"DELETE",
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
     });
 
     if (!response.ok){

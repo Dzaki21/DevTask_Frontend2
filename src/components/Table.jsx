@@ -3,6 +3,7 @@ import { Plus, Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
 import DeleteModal from "./DeleteModal";
 import { deleteTask } from "../services/taskServices";
+import { toast } from "react-toastify";
 
 export default function Table({
   tasks,
@@ -13,6 +14,21 @@ export default function Table({
 }) {
   const [showDelete, setShowDelete] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
+
+  const getStatusStyle = (status) => {switch (status) {
+    case "Pending":
+      return "bg-[#EFD22D] text-yellow-600";
+
+    case "In Progress":
+      return "bg-[#279ED1] text-blue-700";
+
+    case "Completed":
+      return "bg-[#2ABE4C] text-green-700";
+
+    default:
+      return "bg-gray-200 text-white"
+  }
+}
 
 
   return (
@@ -59,13 +75,17 @@ export default function Table({
                 </td>
 
                 <td className="w-[15%]">
-                  <span className="bg-sky-200 text-sky-700 px-3 py-1 rounded-lg text-sm">
+                  <span className={`px-3 py-1 rounded-lg text-sm ${getStatusStyle(task.status)}`}>
                     {task.status}
                   </span>
                 </td>
 
                 <td className="w-[15%] font-medium">
-                  {task.created}
+                   {new Date(task.createdAt).toLocaleDateString("id-ID", {
+                    day: "2-digit",
+                    month:"short",
+                    year:"numeric"
+                   })}
                 </td>
 
                 <td className="w-[15%]">
@@ -105,8 +125,12 @@ export default function Table({
             setShowDelete(false);
             setSelectedTask(null);
 
+            toast.success("Task berhasil dihapus!")
+
           } catch (error) {
             console.error(error);
+
+            toast.error("Gagal menghapus task!")
           }
         }}
       />
